@@ -1,4 +1,5 @@
 class BooksController < ApplicationController
+  before_action :authenticate_user!
 
   def create
     @book=Book.new(book_params)
@@ -17,21 +18,29 @@ class BooksController < ApplicationController
     @books=Book.all
     @user=current_user
     @book=Book.new
+    @users=User.all
   end
 
   def show
-    @user=current_user
+    @new_book=Book.new
     @book =Book.find(params[:id])
+    @user=@book.user
   end
 
   def edit
     @book=Book.find(params[:id])
+    @user=@book.user
+    if @user!=current_user
+      redirect_to books_path
+    end
   end
 
   def destroy
-    book= Book.find(params[:id])
-    #binding.pry
-    book.destroy
+    @book= Book.find(params[:id])
+    @user=@book.user
+    if @user==current_user
+      @book.destroy
+    end
     redirect_to books_path
   end
 

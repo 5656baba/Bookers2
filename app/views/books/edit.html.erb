@@ -1,31 +1,41 @@
-<% if @book.errors.any? %>
-  <%= @book.errors.count %>errors prohibited this obj from being saved:
-  <% @book.errors.full_messages.each do |message| %>
-    <li><%= message %></li>
-  <% end %>
-<% end %>
-
-
-<h1>Editing Books</h1>
-<div>
-  <%= form_with model:@book, local:true do |f| %>
-  <h4>Title</h4>
-  <%= f.text_field :title %>
-  <h4>Opinion</h4>
-  <%= f.text_area :body %>
-  <%= f.submit 'Update Book' %>
-<% end %>
+<div class="container">
+  <div class="error_message">
+    <% if @book.errors.any? %>
+      <h2><%= @book.errors.count %>errors prohibited this obj from being saved:</h2>
+      <ul>
+      <% @book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      </ul>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-lg-5 px-5 px-sm-0 mx-auto">
+      <h2>Editing Books</h2>
+        <%= form_with model: @book, url: book_path, local:true do |f| %>
+          <div class="form-group">
+            <label for="book_title">Title</label>
+            <input type="text" class="form-control" name="book[title]" id="book_title" value="<%= @book.title %>" >
+          </div>
+          <div class="form-group">
+            <label for="book_opinion">Opinion</label>
+            <input type="text" class="form-control" name="book[body]" id="book_opinion" value="<%= @book.body %>" >
+          </div>
+          <button type="submit" class="btn btn-primary">Update Book</button>
+        <% end %>
+        <table>
+          <tr>
+            <td class="button">
+              <%= link_to 'Show',book_path %>
+            </td>
+            <td>|</td>
+            <td class="button">
+              <%= link_to 'Back',books_path %>
+            </td>
+          </tr>
+        </table>
+    </div>
+  </div>
 </div>
 
-  <table>
-  <tr>
-    <td class="button">
-      <%= link_to 'Show',book_path %>
-    </td>
-    <td>|</td>
-    <td class="button">
-      <%= link_to 'Back',books_path %>
-    </td>
-  </tr>
-</table>
-
+<%= render 'devise/shared/footer' %>
